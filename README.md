@@ -13,6 +13,7 @@
   <img src="https://komarev.com/ghpvc/?username=anshumantewary-pm&label=Profile%20views&color=0e75b6&style=flat" alt="Profile views" />
   <img src="https://img.shields.io/github/followers/anshumantewary-pm?label=Followers&style=flat&color=0e75b6" alt="Followers" />
   <img src="https://img.shields.io/badge/Public%20repos-33-0e75b6?style=flat" alt="Public repos" />
+  <a href="https://www.linkedin.com/in/tewary-anshuman/"><img src="https://img.shields.io/badge/LinkedIn-tewary--anshuman-0A66C2?style=flat&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
 </p>
 
 ---
@@ -142,11 +143,8 @@ I'm **Anshuman**, a history graduate who fell for code and data. I turn messy bu
 ### 🤝 Connect with me
 
 <p>
+  <a href="https://www.linkedin.com/in/tewary-anshuman/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
   <a href="https://github.com/anshumantewary-pm"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
-  <!-- Add your links, then delete this comment:
-  <a href="https://www.linkedin.com/in/YOUR-HANDLE"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-  <a href="mailto:YOUR-EMAIL"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-  -->
 </p>
 
 > 💬 Open to collaborating on data analytics, consulting-style problem solving and Python tools.
