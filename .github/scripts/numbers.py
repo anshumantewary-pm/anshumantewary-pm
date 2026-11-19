@@ -1,9 +1,12 @@
-"""Write dist/numbers.svg: the "By the numbers" card on the profile README.
+"""Write the profile's live cards into dist/:
 
-GitHub commits are counted live from the public search API on every run, so the
-card stays current. LinkedIn connections and years of experience change rarely
-and are set below. If the API call fails, the last published count is reused
-rather than showing zero.
+* numbers.svg   "By the numbers": GitHub commits, LinkedIn connections, years consulting
+* trophies.svg  Trophy shelf ranked from real GitHub data (the public trophy
+                service is often down, so the profile generates its own)
+* numbers.json  The raw values, reused as a fallback if the API fails next time
+
+Every element is visible without animation; the fade-ins are extras. Viewers that
+do not play SVG animation (GitHub mobile, reduced motion) still see everything.
 """
 
 from __future__ import annotations
@@ -11,6 +14,7 @@ from __future__ import annotations
 import json
 import os
 import urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
 
 USER = os.environ.get("GITHUB_USER", "anshumantewary-pm")
@@ -18,10 +22,12 @@ TOKEN = os.environ.get("GITHUB_TOKEN", "")
 PREVIOUS = f"https://raw.githubusercontent.com/{USER}/{USER}/output/numbers.json"
 
 LINKEDIN_CONNECTIONS = "11K+"  # 11,196 in the LinkedIn export of 2026-10-22
-CONSULTING_YEARS = "3+"
+CONSULTING_YEARS = 3  # shown as "3+"
+
+FONT = "'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
 
 
-def fetch_json(url: str, token: str = "") -> dict:
+def fetch_json(url: str, token: str = "") -> object:
     request = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json"})
     if token:
         request.add_header("Authorization", f"Bearer {token}")
@@ -29,22 +35,41 @@ def fetch_json(url: str, token: str = "") -> dict:
         return json.load(response)
 
 
-def commit_count() -> int:
+def gather() -> dict[str, int]:
+    """Live stats from the GitHub API; fall back to the last published values."""
     try:
-        return int(fetch_json(f"https://api.github.com/search/commits?q=author:{USER}", TOKEN)["total_count"])
-    except Exception as error:  # network or rate limit: fall back to the last good value
-        print(f"search API failed ({error}); reusing the previous count")
+        api = "https://api.github.com"
+        commits = fetch_json(f"{api}/search/commits?q=author:{USER}", TOKEN)["total_count"]  # type: ignore[index]
+        user = fetch_json(f"{api}/users/{USER}", TOKEN)
+        repos = fetch_json(f"{api}/users/{USER}/repos?per_page=100&type=owner", TOKEN)
+        created = datetime.fromisoformat(user["created_at"].replace("Z", "+00:00"))  # type: ignore[index]
+        return {
+            "commits": int(commits),
+            "repos": int(user["public_repos"]),  # type: ignore[index]
+            "languages": len({r["language"] for r in repos if r.get("language")}),  # type: ignore[union-attr]
+            "stars": sum(int(r["stargazers_count"]) for r in repos),  # type: ignore[union-attr]
+            "github_years": (datetime.now(timezone.utc) - created).days // 365,
+        }
+    except Exception as error:
+        print(f"GitHub API failed ({error}); reusing the previous values")
         try:
-            return int(fetch_json(PREVIOUS)["commits"])
+            return dict(fetch_json(PREVIOUS))  # type: ignore[arg-type]
         except Exception:
-            return 0
+            return {"commits": 0, "repos": 0, "languages": 0, "stars": 0, "github_years": 0}
 
 
-def tile(x: int, delay: float, emoji: str, value: str, label: str, sub: str) -> str:
-    return f"""
-  <g transform="translate({x} 0)" opacity="0">
-    <animate attributeName="opacity" values="0;1" begin="{delay}s" dur="0.8s" fill="freeze" />
-    <animateTransform attributeName="transform" type="translate" values="{x} 14; {x} 0" begin="{delay}s" dur="0.8s" fill="freeze" />
+def fade(delay: float) -> str:
+    """Fade in from the start of the timeline; the element's own opacity stays 1."""
+    return (
+        f'<animate attributeName="opacity" values="0;0;1" keyTimes="0;{delay / (delay + 0.8):.3f};1" '
+        f'dur="{delay + 0.8:.2f}s" />'
+    )
+
+
+def numbers_svg(stats: dict[str, int]) -> str:
+    def tile(x: int, delay: float, emoji: str, value: str, label: str, sub: str) -> str:
+        return f"""
+  <g transform="translate({x} 0)">{fade(delay)}
     <rect x="0" y="0" width="260" height="150" rx="18" fill="#1f1235" stroke="url(#edge)" stroke-width="2" />
     <text x="130" y="44" font-size="30" text-anchor="middle">{emoji}</text>
     <text x="130" y="92" font-size="40" font-weight="800" text-anchor="middle" fill="url(#gold)">{value}</text>
@@ -52,34 +77,84 @@ def tile(x: int, delay: float, emoji: str, value: str, label: str, sub: str) -> 
     <text x="130" y="137" font-size="12" text-anchor="middle" fill="#d9c6ff">{sub}</text>
   </g>"""
 
-
-def main() -> None:
-    commits = commit_count()
     tiles = "".join(
         [
-            tile(20, 0.2, "💻", f"{commits:,}", "GitHub commits", "public, all repos · updated daily"),
+            tile(20, 0.2, "💻", f"{stats['commits']:,}", "GitHub commits", "public, all repos · updated daily"),
             tile(300, 0.5, "🤝", LINKEDIN_CONNECTIONS, "LinkedIn connections", "and growing"),
-            tile(580, 0.8, "🧠", f"{CONSULTING_YEARS} yrs", "Strategic consulting", "growth · product · operations"),
+            tile(580, 0.8, "🧠", f"{CONSULTING_YEARS}+ yrs", "Strategic consulting", "growth · product · operations"),
         ]
     )
-    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="860" height="170" viewBox="0 0 860 170" role="img" aria-label="By the numbers: {commits} GitHub commits, {LINKEDIN_CONNECTIONS} LinkedIn connections, {CONSULTING_YEARS} years in strategic consulting">
+    label = (
+        f"By the numbers: {stats['commits']} GitHub commits, {LINKEDIN_CONNECTIONS} LinkedIn "
+        f"connections, {CONSULTING_YEARS}+ years in strategic consulting"
+    )
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="860" height="170" viewBox="0 0 860 170" role="img" aria-label="{label}">
   <defs>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#ffd23f" /><stop offset="1" stop-color="#ff7b29" />
-    </linearGradient>
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ffaf7b" /><stop offset="0.5" stop-color="#d76d77" /><stop offset="1" stop-color="#7928ca" />
-    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd23f" /><stop offset="1" stop-color="#ff7b29" /></linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffaf7b" /><stop offset="0.5" stop-color="#d76d77" /><stop offset="1" stop-color="#7928ca" /></linearGradient>
   </defs>
-  <g font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">{tiles}
+  <g font-family="{FONT}">{tiles}
   </g>
 </svg>
 """
+
+
+# (title, unit, value key, thresholds for S / A / B / C)
+TROPHIES = [
+    ("Commits", "commits", "commits", (1000, 500, 100, 10)),
+    ("Repositories", "repos", "repos", (50, 30, 10, 1)),
+    ("Languages", "languages", "languages", (8, 5, 3, 1)),
+    ("GitHub years", "years", "github_years", (5, 3, 2, 1)),
+    ("Consulting", "years", "consulting_years", (5, 3, 2, 1)),
+]
+RANK_COLOURS = {"S": "#ffd23f", "A": "#ffaf7b", "B": "#d76d77", "C": "#b392f0", "-": "#6e6a86"}
+
+
+def rank(value: int, thresholds: tuple[int, int, int, int]) -> str:
+    for letter, minimum in zip("SABC", thresholds):
+        if value >= minimum:
+            return letter
+    return "-"
+
+
+def trophies_svg(stats: dict[str, int]) -> str:
+    values = {**stats, "consulting_years": CONSULTING_YEARS}
+    cards = []
+    for i, (title, unit, key, thresholds) in enumerate(TROPHIES):
+        value = values[key]
+        letter = rank(value, thresholds)
+        colour = RANK_COLOURS[letter]
+        x = 10 + i * 168
+        cards.append(f"""
+  <g transform="translate({x} 0)">{fade(0.15 * i + 0.1)}
+    <rect x="0" y="0" width="156" height="170" rx="16" fill="#1f1235" stroke="{colour}" stroke-opacity="0.7" stroke-width="2" />
+    <g transform="translate(78 62)" fill="{colour}">
+      <path d="M-26 -34 h52 v14 a26 26 0 0 1 -52 0 z" />
+      <path d="M-26 -28 h-12 a12 12 0 0 0 12 18 z M26 -28 h12 a12 12 0 0 1 -12 18 z" opacity="0.75" />
+      <rect x="-5" y="-2" width="10" height="16" />
+      <rect x="-18" y="14" width="36" height="8" rx="2" />
+      <text x="0" y="-12" font-size="18" font-weight="900" text-anchor="middle" fill="#1f1235">{letter}</text>
+    </g>
+    <text x="78" y="118" font-size="15" font-weight="800" text-anchor="middle" fill="#fff4e0">{title}</text>
+    <text x="78" y="140" font-size="13" text-anchor="middle" fill="#d9c6ff">{value:,} {unit}</text>
+    <text x="78" y="158" font-size="11" text-anchor="middle" fill="{colour}">Rank {letter}</text>
+  </g>""")
+    width = 10 + len(TROPHIES) * 168
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="180" viewBox="0 0 {width} 180" role="img" aria-label="GitHub trophies">
+  <g font-family="{FONT}">{"".join(cards)}
+  </g>
+</svg>
+"""
+
+
+def main() -> None:
+    stats = gather()
     out = Path("dist")
     out.mkdir(exist_ok=True)
-    (out / "numbers.svg").write_text(svg, encoding="utf-8")
-    (out / "numbers.json").write_text(json.dumps({"commits": commits}), encoding="utf-8")
-    print(f"numbers.svg written: {commits} commits")
+    (out / "numbers.svg").write_text(numbers_svg(stats), encoding="utf-8")
+    (out / "trophies.svg").write_text(trophies_svg(stats), encoding="utf-8")
+    (out / "numbers.json").write_text(json.dumps(stats), encoding="utf-8")
+    print(f"cards written: {stats}")
 
 
 if __name__ == "__main__":

@@ -78,7 +78,7 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 </p>
 
 <p align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=anshumantewary-pm&theme=radical&no-frame=true&no-bg=true&margin-w=8&column=7" alt="Trophies" />
+  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/trophies.svg" width="860" alt="Trophies ranked from my GitHub data" />
 </p>
 
 <p align="center">
