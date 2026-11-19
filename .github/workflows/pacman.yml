@@ -1,4 +1,4 @@
-name: Generate Pac-Man contribution game
+name: Generate Pac-Man game and numbers card
 
 on:
   schedule:
@@ -15,12 +15,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      # Checkout first: it cleans the workspace, which would delete anything in dist/.
+      - uses: actions/checkout@v4
+
       - name: Pac-Man
         uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
           games: "pacman"
           hide_month_labels: "false"
+
+      - name: By-the-numbers card (live commit count)
+        run: python .github/scripts/numbers.py
+        env:
+          GITHUB_USER: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to the output branch
         uses: crazy-max/ghaction-github-pages@v4

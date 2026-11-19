@@ -41,6 +41,15 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 
 <p align="center"><i>“Find the growth, build the product, run the machine, prove it with data.”</i></p>
 
+<!-- ===================== NUMBERS ===================== -->
+<h2>☀️ By the numbers</h2>
+
+<p align="center">
+  <a href="https://www.linkedin.com/in/tewary-anshuman/">
+    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/numbers.svg" width="860" alt="By the numbers: GitHub commits, LinkedIn connections and years in strategic consulting" />
+  </a>
+</p>
+
 <!-- ===================== TECH ===================== -->
 <h2>🛠️ Toolkit</h2>
 
@@ -60,7 +69,7 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 <h2>🔥 GitHub in numbers</h2>
 
 <p align="center">
-  <img height="175" src="https://github-readme-stats.vercel.app/api?username=anshumantewary-pm&show_icons=true&theme=radical&hide_border=true&count_private=true&include_all_commits=true&border_radius=14" alt="GitHub stats" />
+  <img height="175" src="https://github-readme-stats.vercel.app/api?username=anshumantewary-pm&show_icons=true&theme=radical&hide_border=true&border_radius=14" alt="GitHub stats" />
 </p>
 
 <p align="center">
@@ -96,5 +105,5 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 </p>
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:FFD000,30:00DFD8,65:7928CA,100:FF0080&height=130&section=footer&animation=twinkling" alt="Footer" />
+  <img src="assets/footer.svg" width="100%" alt="The sun sets into the sea: thanks for stopping by" />
 </p>

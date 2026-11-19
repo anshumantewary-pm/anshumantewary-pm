@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="220" viewBox="0 0 1200 220" role="img" aria-labelledby="ft fd">
+  <title id="ft">Thanks for visiting</title>
+  <desc id="fd">The sun sets into the sea at dusk with a thank-you message.</desc>
+  <defs>
+    <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a1c71" />
+      <stop offset="0.55" stop-color="#d76d77" />
+      <stop offset="0.85" stop-color="#ffaf7b" />
+    </linearGradient>
+    <radialGradient id="sunF" cx="0.5" cy="0.45" r="0.6">
+      <stop offset="0" stop-color="#fff7c2" /><stop offset="0.55" stop-color="#ffd23f" /><stop offset="1" stop-color="#ff7b29" />
+    </radialGradient>
+    <radialGradient id="glowF" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffd23f" stop-opacity="0.7" />
+      <stop offset="1" stop-color="#ff8a3d" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="seaF" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a1c71" /><stop offset="1" stop-color="#140829" />
+    </linearGradient>
+    <clipPath id="skyOnly"><rect width="1200" height="150" /></clipPath>
+    <filter id="sh"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#2a0a3a" flood-opacity="0.6" /></filter>
+  </defs>
+
+  <rect width="1200" height="220" fill="url(#dusk)" />
+
+  <!-- The sun sinks toward the horizon, then gently bobs there -->
+  <g clip-path="url(#skyOnly)">
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 -40; 0 0" dur="3s" calcMode="spline" keySplines="0.3 0 0.2 1" fill="freeze" />
+      <g>
+        <animateTransform attributeName="transform" type="translate" values="0 0; 0 6; 0 0" begin="3s" dur="4s" repeatCount="indefinite" />
+        <circle cx="600" cy="150" r="150" fill="url(#glowF)" />
+        <circle cx="600" cy="150" r="70" fill="url(#sunF)" />
+      </g>
+    </g>
+  </g>
+
+  <!-- Sea and reflection -->
+  <rect y="150" width="1200" height="70" fill="url(#seaF)" />
+  <g fill="#ffd23f" opacity="0.85">
+    <rect x="540" y="160" width="120" height="4" rx="2"><animate attributeName="width" values="120;90;120" dur="3s" repeatCount="indefinite" /></rect>
+    <rect x="560" y="174" width="80" height="3" rx="1.5"><animate attributeName="x" values="560;572;560" dur="2.4s" repeatCount="indefinite" /></rect>
+    <rect x="580" y="187" width="40" height="3" rx="1.5" />
+  </g>
+  <path d="M0 150 Q 140 118 290 140 T 520 138 Q 560 134 575 150 Z" fill="#2a0f4a" opacity="0.9" />
+  <path d="M625 150 Q 690 128 820 140 T 1060 132 Q 1140 128 1200 142 L1200 150 Z" fill="#2a0f4a" opacity="0.9" />
+
+  <g font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" text-anchor="middle" filter="url(#sh)">
+    <text x="600" y="44" font-size="34" font-weight="800" fill="#ffffff">Thanks for stopping by ☀️</text>
+    <text x="600" y="74" font-size="18" font-weight="600" fill="#fff4e0" letter-spacing="2">EVERY SUNSET IS A PROMISE OF A NEW SUNRISE  •  LET'S GROW SOMETHING TOGETHER</text>
+  </g>
+</svg>
