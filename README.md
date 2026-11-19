@@ -98,7 +98,7 @@ I'm **Anshuman**, based in **New Delhi**: an MBA and a strategy and project pers
 
 | Project | What it is | Stack |
 |---|---|---|
-| 🧮 [The Consultant's Math](https://github.com/anshumantewary-pm/The-Consultant-s-Math) | Consulting case-math library, CLI and in-browser app: profitability, break-even, NPV/IRR, pricing, LTV/CAC, sensitivity, goal seek, Monte Carlo and four solved cases. 380+ tests, strict typing, CI | Python, Pyodide, GitHub Actions |
+| 🧮 [The Consultant's Math](https://github.com/anshumantewary-pm/The-Consultant-s-Math) | Consulting case-math library, CLI and in-browser app: profitability, break-even, pricing, M&A synergies, NPV/IRR, LTV/CAC, sensitivity, goal seek, Monte Carlo, a drill mode and six solved cases. ~500 tests, strict typing, CI | Python, Pyodide, GitHub Actions |
 | 🗓️ [Chanakya Task Flow](https://github.com/anshumantewary-pm/Chanakya-Task-Flow-Website) | Personal planner that schedules your tasks for you | Next.js, TypeScript, Tailwind, Supabase, Vercel |
 | 🌱 [Project Nirvana](https://github.com/anshumantewary-pm/Project-Nirvana) | AI-powered Lean Six Sigma engine to find energy and water waste in data centres (Google Startup Buildathon India 2026) | BigQuery, Google Cloud, Gemini |
 | 🏭 [Semiconductor Wafer Yield](https://github.com/anshumantewary-pm/Semiconductor-Wafer-Yield-Optimization-Predictive-Failure-Analytics-Platform) | Wafer defect prediction and yield analytics platform | Python, Jupyter |
