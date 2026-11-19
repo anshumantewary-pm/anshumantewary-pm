@@ -1,11 +1,11 @@
 <!-- Banner -->
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=200&section=header&text=Anshuman%20Tewary&fontSize=52&fontColor=ffffff&animation=fadeIn&fontAlignY=36&desc=History%20grad%20turned%20full-stack%20human&descAlignY=56&descSize=18" alt="Anshuman Tewary banner" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=200&section=header&text=Anshuman%20Tewary&fontSize=52&fontColor=ffffff&animation=fadeIn&fontAlignY=36&desc=Strategy%20%E2%80%A2%20Project%20Management%20%E2%80%A2%20Agentic%20AI&descAlignY=56&descSize=18" alt="Anshuman Tewary banner" />
 </p>
 
 <p align="center">
   <a href="https://github.com/anshumantewary-pm">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=36BCF7&center=true&vCenter=true&width=620&lines=Code+%2B+Chai+%3D+Bliss+%E2%98%95%F0%9F%90%8D;Breaking+loops%2C+building+dreams;Data+analytics+%E2%80%A2+Python+%E2%80%A2+Consulting+math;UN+delegate+%E2%80%A2+Life+explorer" alt="Typing intro" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=36BCF7&center=true&vCenter=true&width=620&lines=Strategy+%26+growth+for+AI+and+tech;Founder's+Office+%E2%80%A2+Project+Manager+%E2%80%A2+Consultant;Agentic+AI+%E2%80%A2+PG+Diploma%2C+IIT+Patna;Data+analytics+%E2%80%A2+Python+%E2%80%A2+Consulting+math;Code+%2B+Chai+%3D+Bliss+%E2%98%95" alt="Typing intro" />
   </a>
 </p>
 
@@ -20,13 +20,29 @@
 
 ### 👋 About me
 
-I'm **Anshuman**, a history graduate who fell for code and data. I turn messy business questions into numbers, dashboards and small tools that answer them.
+I'm **Anshuman**, based in **New Delhi**: a history graduate turned strategy and project person who builds with data and AI. I've worked in Founder's Office, project management and consulting roles across **AI, non-profit and political organisations**, and I'm heading toward **strategy consulting for AI and technology**.
 
+- 🎯 **Focus:** strategy, growth and project leadership for AI and tech
+- 🤖 **Learning:** Agentic AI engineering (PG Diploma, IIT Patna)
 - 📊 **Doing:** data analytics and business case work: sales, churn, logistics, financial statements
 - 🐍 **Building:** Python tools, from first calculators to a tested consulting-math library and CLI
 - 🌐 **Shipping:** a full-stack planner with Next.js, Supabase and Vercel
-- 🏭 **Exploring:** predictive analytics for manufacturing (semiconductor wafer yield) and sustainability (data-centre energy)
 - 🌍 **Off-screen:** UN delegate, life explorer, and always one chai away from the next idea
+
+### 💼 Experience at a glance
+
+| | |
+|---|---|
+| **Roles** | Founder's Office · Project Manager · Consultant · HR |
+| **Sectors** | AI and technology · Non-profit · Political organisations |
+| **Strengths** | Strategic problem-solving · Project delivery · Growth · Data-driven decisions |
+
+### 🎓 Education
+
+- **IIT Patna**: PG Diploma (Agentic AI)
+- **Lovely Professional University**
+
+> Full timeline on [LinkedIn](https://www.linkedin.com/in/tewary-anshuman/).
 
 ---
 
