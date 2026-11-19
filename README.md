@@ -1,6 +1,6 @@
 <!-- ===================== BANNER ===================== -->
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:FF0080,35:7928CA,70:00DFD8,100:FFD000&height=230&section=header&text=Anshuman%20Tewary&fontSize=60&fontColor=ffffff&animation=twinkling&fontAlignY=36&desc=Strategic%20Consultant%20%E2%80%A2%20Growth%20%E2%80%A2%20Product%20%E2%80%A2%20Operations&descAlignY=58&descSize=20" alt="Anshuman Tewary" />
+  <img src="assets/banner.svg" width="100%" alt="Anshuman Tewary, with a sun rising behind the name" />
 </p>
 
 <p align="center">
@@ -19,32 +19,27 @@
 </p>
 
 <!-- ===================== ABOUT ===================== -->
-<h2>⚡ About me</h2>
+<h2><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Waving%20Hand.png" width="34" height="34" alt="" /> About me</h2>
 
-<img align="right" width="360" src="https://github-readme-stats.vercel.app/api?username=anshumantewary-pm&show_icons=true&theme=radical&hide_border=true&count_private=true&include_all_commits=true&hide_title=true&border_radius=14" alt="GitHub stats" />
+I'm a **Strategic Consultant** and the **Head of Strategic Growth, Product & Operations at SyncroVox AI** *(Vocal Labs AI)*.
 
-I'm a **Strategic Consultant** who turns ambiguous business problems into clear plans, sharp numbers and things that ship.
+I sit where strategy meets execution: I find where the growth is, shape the product that captures it, and build the operations that let it scale. Every call is backed by data, from market sizing and pricing to dashboards and forecasts, and I'm currently exploring how **Agentic AI** changes the way products and teams work.
 
-- 🚀 **Now:** Head of **Strategic Growth, Product & Operations** at **SyncroVox AI** *(Vocal Labs AI)*
-- 🧠 **I do:** growth strategy, product direction, operating models and go-to-market
-- 📊 **I use:** data analytics, financial modelling and AI to back every call with evidence
-- 🤖 **Exploring:** Agentic AI and how it reshapes products and operations
-- 🎓 **MBA**
-- 🌍 **Beyond work:** UN delegate, life explorer, always one chai away from the next idea
-
-<br clear="right" />
-
-<!-- ===================== WHAT I BRING ===================== -->
-<h2>🎯 What I bring</h2>
-
-<table>
+<table align="center">
   <tr>
-    <td align="center" width="25%">🧭<br /><b>Strategy</b><br /><sub>Market entry, pricing, growth plans</sub></td>
-    <td align="center" width="25%">📦<br /><b>Product</b><br /><sub>Roadmaps, prioritisation, launch</sub></td>
-    <td align="center" width="25%">⚙️<br /><b>Operations</b><br /><sub>Processes, KPIs, scale</sub></td>
-    <td align="center" width="25%">📈<br /><b>Analytics</b><br /><sub>Dashboards, forecasting, models</sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Office%20Worker.png" width="64" height="64" alt="" /><br /><sub><b>Strategic<br />Consultant</b></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" width="64" height="64" alt="" /><br /><sub><b>Growth</b></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Package.png" width="64" height="64" alt="" /><br /><sub><b>Product</b></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Gear.png" width="64" height="64" alt="" /><br /><sub><b>Operations</b></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Bar%20Chart.png" width="64" height="64" alt="" /><br /><sub><b>Analytics</b></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png" width="64" height="64" alt="" /><br /><sub><b>Agentic AI</b></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Graduation%20Cap.png" width="64" height="64" alt="" /><br /><sub><b>MBA</b></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Globe%20Showing%20Asia-Australia.png" width="64" height="64" alt="" /><br /><sub><b>UN<br />Delegate</b></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Teacup%20Without%20Handle.png" width="64" height="64" alt="" /><br /><sub><b>Chai-<br />powered</b></sub></td>
   </tr>
 </table>
+
+<p align="center"><i>“Find the growth, build the product, run the machine, prove it with data.”</i></p>
 
 <!-- ===================== TECH ===================== -->
 <h2>🛠️ Toolkit</h2>
@@ -65,6 +60,10 @@ I'm a **Strategic Consultant** who turns ambiguous business problems into clear 
 <h2>🔥 GitHub in numbers</h2>
 
 <p align="center">
+  <img height="175" src="https://github-readme-stats.vercel.app/api?username=anshumantewary-pm&show_icons=true&theme=radical&hide_border=true&count_private=true&include_all_commits=true&border_radius=14" alt="GitHub stats" />
+</p>
+
+<p align="center">
   <img height="175" src="https://streak-stats.demolab.com?user=anshumantewary-pm&theme=radical&hide_border=true&border_radius=14" alt="Streak" />
   <img height="175" src="https://github-readme-stats.vercel.app/api/top-langs/?username=anshumantewary-pm&layout=compact&theme=radical&hide_border=true&border_radius=14&langs_count=6" alt="Top languages" />
 </p>
@@ -78,29 +77,12 @@ I'm a **Strategic Consultant** who turns ambiguous business problems into clear 
 </p>
 
 <!-- ===================== GAMES ===================== -->
-<h2>🎮 Arcade: my contributions vs. the classics</h2>
+<h2>👾 Pac-Man vs. my contributions</h2>
 
-<p align="center"><b>👾 Pac-Man</b></p>
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/pacman-contribution-graph-dark.svg" />
     <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/pacman-contribution-graph.svg" alt="Pac-Man eating my contribution graph" />
-  </picture>
-</p>
-
-<p align="center"><b>🧱 Breakout</b></p>
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/breakout-contribution-graph-dark.svg" />
-    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/breakout-contribution-graph.svg" alt="Breakout smashing my contribution graph" />
-  </picture>
-</p>
-
-<p align="center"><b>🐍 Snake</b></p>
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/github-contribution-grid-snake-dark.svg" />
-    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/github-contribution-grid-snake.svg" alt="Snake eating my contribution graph" />
   </picture>
 </p>
 

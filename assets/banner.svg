@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-labelledby="title desc">
+  <title id="title">Anshuman Tewary</title>
+  <desc id="desc">A sun rises behind the name Anshuman Tewary over a sea at dawn.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b0b3a">
+        <animate attributeName="stop-color" values="#1b0b3a;#3a1c71;#3a1c71" dur="4s" fill="freeze" />
+      </stop>
+      <stop offset="0.45" stop-color="#5b1f6e">
+        <animate attributeName="stop-color" values="#5b1f6e;#d76d77;#d76d77" dur="4s" fill="freeze" />
+      </stop>
+      <stop offset="0.78" stop-color="#b8405e">
+        <animate attributeName="stop-color" values="#b8405e;#ffaf7b;#ffaf7b" dur="4s" fill="freeze" />
+      </stop>
+    </linearGradient>
+    <radialGradient id="sunFill" cx="0.5" cy="0.45" r="0.6">
+      <stop offset="0" stop-color="#fff7c2" />
+      <stop offset="0.55" stop-color="#ffd23f" />
+      <stop offset="1" stop-color="#ff7b29" />
+    </radialGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffd23f" stop-opacity="0.75" />
+      <stop offset="0.6" stop-color="#ff8a3d" stop-opacity="0.22" />
+      <stop offset="1" stop-color="#ff8a3d" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a1c71" />
+      <stop offset="1" stop-color="#140829" />
+    </linearGradient>
+    <linearGradient id="nameFill" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="0.5" stop-color="#fff3d6" />
+      <stop offset="1" stop-color="#ffffff" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-30%" width="120%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#2a0a3a" flood-opacity="0.65" />
+    </filter>
+    <clipPath id="aboveSea"><rect x="0" y="0" width="1200" height="262" /></clipPath>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1200" height="340" fill="url(#sky)" />
+
+  <!-- Stars that fade as the sun comes up -->
+  <g fill="#ffffff">
+    <circle cx="90" cy="40" r="1.6" /><circle cx="210" cy="85" r="1.2" /><circle cx="330" cy="30" r="1.8" />
+    <circle cx="470" cy="70" r="1.2" /><circle cx="760" cy="38" r="1.6" /><circle cx="880" cy="92" r="1.2" />
+    <circle cx="1010" cy="48" r="1.8" /><circle cx="1120" cy="100" r="1.3" /><circle cx="620" cy="22" r="1.3" />
+    <animate attributeName="opacity" values="0.9;0.15" dur="4s" fill="freeze" />
+  </g>
+
+  <!-- Rising sun, clipped at the horizon -->
+  <g clip-path="url(#aboveSea)">
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 170; 0 0" dur="3.2s" calcMode="spline" keySplines="0.2 0.7 0.3 1" fill="freeze" />
+      <circle cx="600" cy="200" r="230" fill="url(#glow)">
+        <animate attributeName="r" values="220;240;220" dur="5s" begin="3.2s" repeatCount="indefinite" />
+      </circle>
+      <!-- Rays -->
+      <g transform="translate(600 200)" stroke="#ffd23f" stroke-width="5" stroke-linecap="round" opacity="0.55">
+        <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="60s" repeatCount="indefinite" additive="sum" />
+        <line x1="0" y1="-125" x2="0" y2="-165" /><line x1="0" y1="125" x2="0" y2="165" />
+        <line x1="-125" y1="0" x2="-165" y2="0" /><line x1="125" y1="0" x2="165" y2="0" />
+        <line x1="88" y1="-88" x2="117" y2="-117" /><line x1="-88" y1="-88" x2="-117" y2="-117" />
+        <line x1="88" y1="88" x2="117" y2="117" /><line x1="-88" y1="88" x2="-117" y2="117" />
+        <line x1="48" y1="-116" x2="63" y2="-152" /><line x1="-48" y1="-116" x2="-63" y2="-152" />
+        <line x1="116" y1="-48" x2="152" y2="-63" /><line x1="-116" y1="-48" x2="-152" y2="-63" />
+      </g>
+      <circle cx="600" cy="200" r="105" fill="url(#sunFill)" />
+    </g>
+  </g>
+
+  <!-- Sea with a shimmering sun reflection -->
+  <rect x="0" y="262" width="1200" height="78" fill="url(#sea)" />
+  <g fill="#ffd23f" opacity="0">
+    <animate attributeName="opacity" values="0;0.85" begin="2.2s" dur="1.5s" fill="freeze" />
+    <rect x="520" y="272" width="160" height="4" rx="2"><animate attributeName="width" values="160;120;160" dur="3s" repeatCount="indefinite" /></rect>
+    <rect x="545" y="286" width="110" height="4" rx="2"><animate attributeName="x" values="545;560;545" dur="2.6s" repeatCount="indefinite" /></rect>
+    <rect x="565" y="300" width="70" height="3" rx="1.5"><animate attributeName="width" values="70;50;70" dur="2.2s" repeatCount="indefinite" /></rect>
+    <rect x="580" y="313" width="40" height="3" rx="1.5" />
+  </g>
+  <!-- Hills on the horizon -->
+  <path d="M0 262 Q 120 222 250 250 T 470 246 Q 530 238 560 262 Z" fill="#2a0f4a" opacity="0.9" />
+  <path d="M640 262 Q 700 236 820 248 T 1040 238 Q 1130 232 1200 252 L1200 262 Z" fill="#2a0f4a" opacity="0.9" />
+
+  <!-- Name -->
+  <g font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" text-anchor="middle" filter="url(#shadow)">
+    <text x="600" y="168" font-size="76" font-weight="800" fill="url(#nameFill)" letter-spacing="2" opacity="0">
+      Anshuman Tewary
+      <animate attributeName="opacity" values="0;1" begin="0.8s" dur="1.6s" fill="freeze" />
+      <animateTransform attributeName="transform" type="translate" values="0 18; 0 0" begin="0.8s" dur="1.6s" fill="freeze" />
+    </text>
+    <text x="600" y="214" font-size="24" font-weight="600" fill="#fff4e0" letter-spacing="3" opacity="0">
+      STRATEGIC CONSULTANT  •  GROWTH  •  PRODUCT  •  OPERATIONS
+      <animate attributeName="opacity" values="0;1" begin="2s" dur="1.4s" fill="freeze" />
+    </text>
+  </g>
+
+  <!-- Two birds crossing -->
+  <g fill="none" stroke="#2a0f4a" stroke-width="2.4" stroke-linecap="round">
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="-80 0; 1280 -40" dur="18s" begin="1s" repeatCount="indefinite" />
+      <path d="M0 110 q 8 -8 16 0 q 8 -8 16 0" />
+      <path d="M40 126 q 6 -6 12 0 q 6 -6 12 0" />
+    </g>
+  </g>
+</svg>

@@ -1,4 +1,4 @@
-name: Generate contribution games
+name: Generate Pac-Man contribution game
 
 on:
   schedule:
@@ -15,22 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      # Runs first: the Snake step below is a Docker action that creates dist/ as
-      # root, after which this (non-root) action can no longer write into it.
-      - name: Pac-Man and Breakout
+      - name: Pac-Man
         uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
-          games: "pacman,breakout"
+          games: "pacman"
           hide_month_labels: "false"
-
-      - name: Snake
-        uses: Platane/snk@v3
-        with:
-          github_user_name: ${{ github.repository_owner }}
-          outputs: |
-            dist/github-contribution-grid-snake.svg
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
 
       - name: Publish to the output branch
         uses: crazy-max/ghaction-github-pages@v4
