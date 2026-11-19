@@ -5,7 +5,7 @@
 
 <p align="center">
   <a href="https://github.com/anshumantewary-pm">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=36BCF7&center=true&vCenter=true&width=620&lines=Strategy+%26+growth+for+AI+and+tech;Founder's+Office+%E2%80%A2+Project+Manager+%E2%80%A2+Consultant;Agentic+AI+%E2%80%A2+PG+Diploma%2C+IIT+Patna;Data+analytics+%E2%80%A2+Python+%E2%80%A2+Consulting+math;Code+%2B+Chai+%3D+Bliss+%E2%98%95" alt="Typing intro" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=36BCF7&center=true&vCenter=true&width=620&lines=Strategy+%26+growth+for+AI+and+tech;Founder's+Office+%E2%80%A2+Project+Manager+%E2%80%A2+Consultant;MBA+%E2%80%A2+Agentic+AI;Data+analytics+%E2%80%A2+Python+%E2%80%A2+Consulting+math;Code+%2B+Chai+%3D+Bliss+%E2%98%95" alt="Typing intro" />
   </a>
 </p>
 
@@ -20,10 +20,10 @@
 
 ### 👋 About me
 
-I'm **Anshuman**, based in **New Delhi**: a history graduate turned strategy and project person who builds with data and AI. I've worked in Founder's Office, project management and consulting roles across **AI, non-profit and political organisations**, and I'm heading toward **strategy consulting for AI and technology**.
+I'm **Anshuman**, based in **New Delhi**: an MBA and a strategy and project person who builds with data and AI. I've worked in Founder's Office, project management and consulting roles across **AI, non-profit and political organisations**, and I'm heading toward **strategy consulting for AI and technology**.
 
 - 🎯 **Focus:** strategy, growth and project leadership for AI and tech
-- 🤖 **Learning:** Agentic AI engineering (PG Diploma, IIT Patna)
+- 🤖 **Learning:** Agentic AI engineering
 - 📊 **Doing:** data analytics and business case work: sales, churn, logistics, financial statements
 - 🐍 **Building:** Python tools, from first calculators to a tested consulting-math library and CLI
 - 🌐 **Shipping:** a full-stack planner with Next.js, Supabase and Vercel
@@ -39,8 +39,7 @@ I'm **Anshuman**, based in **New Delhi**: a history graduate turned strategy and
 
 ### 🎓 Education
 
-- **IIT Patna**: PG Diploma (Agentic AI)
-- **Lovely Professional University**
+- **MBA**
 
 > Full timeline on [LinkedIn](https://www.linkedin.com/in/tewary-anshuman/).
 
