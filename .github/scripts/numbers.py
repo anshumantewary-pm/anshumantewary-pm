@@ -1,7 +1,7 @@
 """Write the profile's live cards into dist/:
 
-* numbers.svg   "By the numbers": GitHub contributions (highlighted), LinkedIn connections,
-                years consulting
+* numbers.svg   "By the numbers": all-time GitHub contributions (highlighted), LinkedIn
+                connections, years consulting
 * trophies.svg  Trophy shelf ranked from real GitHub data (the public trophy
                 service is often down, so the profile generates its own)
 * numbers.json  The raw values, reused as a fallback if the API fails next time
@@ -82,7 +82,9 @@ def gather() -> dict[str, int]:
         repos = fetch_json(f"{api}/users/{USER}/repos?per_page=100&type=owner", TOKEN)
         created = datetime.fromisoformat(user["created_at"].replace("Z", "+00:00"))  # type: ignore[index]
         last_year, all_time = contributions(created)
+        commits = fetch_json(f"{api}/search/commits?q=author:{USER}", TOKEN)["total_count"]  # type: ignore[index]
         return {
+            "commits": int(commits),
             "contributions": last_year,
             "contributions_all_time": all_time,
             "repos": int(user["public_repos"]),  # type: ignore[index]
@@ -92,8 +94,8 @@ def gather() -> dict[str, int]:
         }
     except Exception as error:
         print(f"GitHub API failed ({error}); reusing the previous values")
-        empty = {"contributions": 0, "contributions_all_time": 0, "repos": 0, "languages": 0,
-                 "stars": 0, "github_years": 0}
+        empty = {"commits": 0, "contributions": 0, "contributions_all_time": 0, "repos": 0,
+                 "languages": 0, "stars": 0, "github_years": 0}
         try:
             return {**empty, **dict(fetch_json(PREVIOUS))}  # type: ignore[arg-type]
         except Exception:
@@ -128,14 +130,14 @@ def numbers_svg(stats: dict[str, int]) -> str:
 
     tiles = "".join(
         [
-            tile(20, 0.2, "🔥", f"{stats['contributions']:,}", "Contributions, last year",
-                 f"{stats['contributions_all_time']:,} all time · updated every 6 h", highlight=True),
+            tile(20, 0.2, "🔥", f"{stats['contributions_all_time']:,}", "Total contributions",
+                 f"all years · {stats['contributions']:,} in the last year", highlight=True),
             tile(300, 0.5, "🤝", LINKEDIN_CONNECTIONS, "LinkedIn connections", "and growing"),
             tile(580, 0.8, "🧠", f"{CONSULTING_YEARS}+ yrs", "Strategic consulting", "growth · product · operations"),
         ]
     )
     label = (
-        f"By the numbers: {stats['contributions']} GitHub contributions in the last year, "
+        f"By the numbers: {stats['contributions_all_time']} GitHub contributions in total, "
         f"{LINKEDIN_CONNECTIONS} LinkedIn "
         f"connections, {CONSULTING_YEARS}+ years in strategic consulting"
     )
@@ -152,7 +154,7 @@ def numbers_svg(stats: dict[str, int]) -> str:
 
 # (title, unit, value key, thresholds for S / A / B / C)
 TROPHIES = [
-    ("Contributions", "last year", "contributions", (1000, 500, 100, 10)),
+    ("Commits", "commits", "commits", (1000, 500, 100, 10)),
     ("Repositories", "repos", "repos", (50, 30, 10, 1)),
     ("Languages", "languages", "languages", (8, 5, 3, 1)),
     ("GitHub years", "years", "github_years", (5, 3, 2, 1)),

@@ -23,7 +23,7 @@
 
 <p align="center">
   <a href="https://github.com/anshumantewary-pm">
-    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/numbers.svg" width="860" alt="By the numbers: GitHub contributions in the last year, LinkedIn connections and years in strategic consulting" />
+    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/numbers.svg" width="860" alt="By the numbers: total GitHub contributions, LinkedIn connections and years in strategic consulting" />
   </a>
 </p>
 
@@ -73,7 +73,7 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 <h2>🔥 GitHub in numbers</h2>
 
 <p align="center">
-  <img height="175" src="https://github-readme-stats.vercel.app/api?username=anshumantewary-pm&show_icons=true&hide=commits&theme=radical&hide_border=true&border_radius=14" alt="GitHub stats" />
+  <img height="175" src="https://github-readme-stats.vercel.app/api?username=anshumantewary-pm&show_icons=true&theme=radical&hide_border=true&border_radius=14" alt="GitHub stats" />
 </p>
 
 <p align="center">
