@@ -1,16 +1,20 @@
-name: Generate Pac-Man game and contributions card
+name: Refresh profile cards (Pac-Man, stats, latest commits)
 
 on:
   schedule:
-    # Every 6 hours at an off-peak minute. A single run at 00:00 UTC, GitHub's busiest slot,
-    # was delayed by hours, so the cards looked stale.
-    - cron: "17 */6 * * *"
+    # Hourly at an off-peak minute. GitHub drops many scheduled runs under load, so a
+    # 6-hourly schedule often meant one refresh a day; hourly keeps the cards fresh.
+    - cron: "23 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
 
 permissions:
   contents: write
+
+concurrency:
+  group: profile-cards
+  cancel-in-progress: true
 
 jobs:
   generate:
@@ -27,7 +31,7 @@ jobs:
           games: "pacman"
           hide_month_labels: "false"
 
-      - name: By-the-numbers card (live contribution count)
+      - name: Stats, trophies, latest commits and repos cards
         run: python .github/scripts/numbers.py
         env:
           GITHUB_USER: ${{ github.repository_owner }}

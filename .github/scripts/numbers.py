@@ -4,6 +4,9 @@
                 connections, years consulting
 * trophies.svg  Trophy shelf ranked from real GitHub data (the public trophy
                 service is often down, so the profile generates its own)
+* github-stats.svg  Commits, contributions, repos, stars and a top-languages bar (replaces the
+                   public github-readme-stats cards, which are often rate-limited or stale)
+* activity.svg  Latest commits and most recently updated repositories, refreshed every run
 * numbers.json  The raw values, reused as a fallback if the API fails next time
 
 Every element is visible without animation; the fade-ins are extras. Viewers that
@@ -17,6 +20,8 @@ import os
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
+from xml.sax.saxutils import escape
 
 USER = os.environ.get("GITHUB_USER", "anshumantewary-pm")
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
@@ -74,16 +79,60 @@ def contributions(created: datetime) -> tuple[int, int]:
     return last_year, all_time
 
 
-def gather() -> dict[str, int]:
+def top_languages(repos: list[dict[str, Any]]) -> list[list[Any]]:
+    """[[language, share], ...] by bytes of code across owned, non-fork repos (top 6)."""
+    totals: dict[str, int] = {}
+    for repo in repos:
+        if repo.get("fork"):
+            continue
+        try:
+            langs = fetch_json(repo["languages_url"], TOKEN)
+        except Exception:
+            continue
+        for name, size in dict(langs).items():  # type: ignore[arg-type]
+            totals[name] = totals.get(name, 0) + int(size)
+    grand = sum(totals.values()) or 1
+    ranked = sorted(totals.items(), key=lambda kv: kv[1], reverse=True)[:6]
+    return [[name, size / grand] for name, size in ranked]
+
+
+def recent_commits() -> list[dict[str, str]]:
+    """The latest commits authored by USER across all public repos (newest first)."""
+    url = (
+        "https://api.github.com/search/commits"
+        f"?q=author:{USER}&sort=author-date&order=desc&per_page=6"
+    )
+    items = fetch_json(url, TOKEN)["items"]  # type: ignore[index]
+    return [
+        {
+            "repo": item["repository"]["name"],
+            "message": item["commit"]["message"].splitlines()[0],
+            "date": item["commit"]["author"]["date"],
+        }
+        for item in items
+    ]
+
+
+def recent_repos(repos: list[dict[str, Any]]) -> list[dict[str, str]]:
+    ranked = sorted(repos, key=lambda r: r.get("pushed_at") or "", reverse=True)[:6]
+    return [
+        {"name": r["name"], "language": r.get("language") or "", "date": r.get("pushed_at") or ""}
+        for r in ranked
+    ]
+
+
+def gather() -> dict[str, Any]:
     """Live stats from the GitHub API; fall back to the last published values."""
     try:
         api = "https://api.github.com"
         user = fetch_json(f"{api}/users/{USER}", TOKEN)
-        repos = fetch_json(f"{api}/users/{USER}/repos?per_page=100&type=owner", TOKEN)
+        repos = fetch_json(
+            f"{api}/users/{USER}/repos?per_page=100&type=owner&sort=pushed", TOKEN
+        )
         created = datetime.fromisoformat(user["created_at"].replace("Z", "+00:00"))  # type: ignore[index]
         last_year, all_time = contributions(created)
         commits = fetch_json(f"{api}/search/commits?q=author:{USER}", TOKEN)["total_count"]  # type: ignore[index]
-        return {
+        stats: dict[str, Any] = {
             "commits": int(commits),
             "contributions": last_year,
             "contributions_all_time": all_time,
@@ -94,12 +143,25 @@ def gather() -> dict[str, int]:
         }
     except Exception as error:
         print(f"GitHub API failed ({error}); reusing the previous values")
-        empty = {"commits": 0, "contributions": 0, "contributions_all_time": 0, "repos": 0,
-                 "languages": 0, "stars": 0, "github_years": 0}
+        empty: dict[str, Any] = {"commits": 0, "contributions": 0, "contributions_all_time": 0,
+                                 "repos": 0, "languages": 0, "stars": 0, "github_years": 0,
+                                 "top_languages": [], "recent_commits": [], "recent_repos": []}
         try:
             return {**empty, **dict(fetch_json(PREVIOUS))}  # type: ignore[arg-type]
         except Exception:
             return empty
+    # The extras each fail on their own, so one bad call never blanks the whole card.
+    for key, call in (
+        ("top_languages", lambda: top_languages(repos)),  # type: ignore[arg-type]
+        ("recent_commits", recent_commits),
+        ("recent_repos", lambda: recent_repos(repos)),  # type: ignore[arg-type]
+    ):
+        try:
+            stats[key] = call()
+        except Exception as error:
+            print(f"{key} failed ({error})")
+            stats[key] = []
+    return stats
 
 
 def fade(delay: float) -> str:
@@ -110,7 +172,7 @@ def fade(delay: float) -> str:
     )
 
 
-def numbers_svg(stats: dict[str, int]) -> str:
+def numbers_svg(stats: dict[str, Any]) -> str:
     def tile(x: int, delay: float, emoji: str, value: str, label: str, sub: str,
              highlight: bool = False) -> str:
         # The highlighted tile has a thicker gold border, inset so it is not clipped.
@@ -170,7 +232,7 @@ def rank(value: int, thresholds: tuple[int, int, int, int]) -> str:
     return "-"
 
 
-def trophies_svg(stats: dict[str, int]) -> str:
+def trophies_svg(stats: dict[str, Any]) -> str:
     values = {**stats, "consulting_years": CONSULTING_YEARS}
     cards = []
     for i, (title, unit, key, thresholds) in enumerate(TROPHIES):
@@ -200,12 +262,126 @@ def trophies_svg(stats: dict[str, int]) -> str:
 """
 
 
+LANG_COLOURS = ["#ffd23f", "#ff7b29", "#ff0080", "#b392f0", "#00dfd8", "#7928ca"]
+
+
+def ago(stamp: str, now: datetime) -> str:
+    if not stamp:
+        return ""
+    then = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    minutes = max(int((now - then).total_seconds() // 60), 0)
+    if minutes < 60:
+        return f"{minutes}m ago"
+    if minutes < 48 * 60:
+        return f"{minutes // 60}h ago"
+    days = minutes // (60 * 24)
+    return f"{days}d ago" if days < 60 else then.strftime("%b %Y")
+
+
+def clip(text: str, limit: int) -> str:
+    return escape(text if len(text) <= limit else text[: limit - 1] + "…")
+
+
+def stats_svg(stats: dict[str, Any], now: datetime) -> str:
+    tiles = [
+        ("Commits", stats["commits"], "all time"),
+        ("Contributions", stats["contributions"], "past year"),
+        ("Repositories", stats["repos"], "public"),
+        ("Stars", stats["stars"], "earned"),
+    ]
+    cells = "".join(
+        f"""
+  <g transform="translate({20 + (i % 2) * 200} {20 + (i // 2) * 92})">{fade(0.15 * i + 0.1)}
+    <rect width="186" height="80" rx="14" fill="#1f1235" stroke="url(#edge)" stroke-width="1.5" />
+    <text x="16" y="28" font-size="13" font-weight="700" fill="#d9c6ff">{label}</text>
+    <text x="16" y="60" font-size="28" font-weight="800" fill="url(#gold)">{value:,}</text>
+    <text x="170" y="28" font-size="11" text-anchor="end" fill="#8f86a8">{sub}</text>
+  </g>"""
+        for i, (label, value, sub) in enumerate(tiles)
+    )
+    langs = stats.get("top_languages") or []
+    bar, legend, x = "", "", 0.0
+    for i, (name, share) in enumerate(langs):
+        width = 380 * float(share)
+        colour = LANG_COLOURS[i % len(LANG_COLOURS)]
+        bar += f'<rect x="{x:.1f}" y="0" width="{max(width, 2):.1f}" height="14" fill="{colour}" />'
+        x += width
+        legend += (
+            f'<g transform="translate({(i % 2) * 190} {36 + (i // 2) * 26})">'
+            f'<circle cx="6" cy="-4" r="6" fill="{colour}" />'
+            f'<text x="18" y="0" font-size="13" fill="#fff4e0">{escape(name)}</text>'
+            f'<text x="170" y="0" font-size="12" text-anchor="end" fill="#d9c6ff">{float(share) * 100:.1f}%</text></g>'
+        )
+    if not langs:
+        legend = '<text x="0" y="40" font-size="13" fill="#8f86a8">No language data yet</text>'
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="860" height="230" viewBox="0 0 860 230" role="img" aria-label="GitHub stats: {stats['commits']} commits, {stats['contributions']} contributions in the last year, {stats['repos']} repositories">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd23f" /><stop offset="1" stop-color="#ff7b29" /></linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffaf7b" /><stop offset="0.5" stop-color="#d76d77" /><stop offset="1" stop-color="#7928ca" /></linearGradient>
+    <clipPath id="pill"><rect width="380" height="14" rx="7" /></clipPath>
+  </defs>
+  <g font-family="{FONT}">{cells}
+  <g transform="translate(440 20)">{fade(0.7)}
+    <rect width="400" height="172" rx="14" fill="#1f1235" stroke="url(#edge)" stroke-width="1.5" />
+    <text x="16" y="28" font-size="13" font-weight="700" fill="#d9c6ff">Top languages</text>
+    <g transform="translate(10 44)"><g clip-path="url(#pill)"><rect width="380" height="14" fill="#2c1d48" />{bar}</g></g>
+    <g transform="translate(16 74)">{legend}</g>
+  </g>
+  <text x="840" y="218" font-size="11" text-anchor="end" fill="#8f86a8">Updated {now:%d %b %Y, %H:%M} UTC</text>
+  </g>
+</svg>
+"""
+
+
+def activity_svg(stats: dict[str, Any], now: datetime) -> str:
+    def rows(items: list[dict[str, str]], kind: str) -> str:
+        if not items:
+            return '<text x="16" y="66" font-size="13" fill="#8f86a8">Nothing to show yet</text>'
+        out = []
+        for i, item in enumerate(items):
+            y = 62 + i * 36
+            if kind == "commits":
+                top, bottom = clip(item["message"], 44), clip(item["repo"], 34)
+            else:
+                top, bottom = clip(item["name"], 40), escape(item.get("language") or "—")
+            out.append(
+                f'<g>{fade(0.1 * i + 0.2)}'
+                f'<circle cx="22" cy="{y - 4}" r="4" fill="url(#gold)" />'
+                f'<text x="36" y="{y}" font-size="13" font-weight="600" fill="#fff4e0">{top}</text>'
+                f'<text x="36" y="{y + 15}" font-size="11" fill="#d9c6ff">{bottom}</text>'
+                f'<text x="394" y="{y}" font-size="11" text-anchor="end" fill="#ffaf7b">{ago(item["date"], now)}</text></g>'
+            )
+        return "".join(out)
+
+    def panel(x: int, title: str, body: str) -> str:
+        return f"""
+  <g transform="translate({x} 10)">
+    <rect width="410" height="290" rx="16" fill="#1f1235" stroke="url(#edge)" stroke-width="1.5" />
+    <text x="16" y="32" font-size="15" font-weight="800" fill="url(#gold)">{title}</text>
+    {body}
+  </g>"""
+
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="860" height="330" viewBox="0 0 860 330" role="img" aria-label="Latest commits and recently updated repositories">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd23f" /><stop offset="1" stop-color="#ff7b29" /></linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffaf7b" /><stop offset="0.5" stop-color="#d76d77" /><stop offset="1" stop-color="#7928ca" /></linearGradient>
+  </defs>
+  <g font-family="{FONT}">{panel(10, "⚡ Latest commits", rows(stats.get("recent_commits") or [], "commits"))}{panel(440, "📦 Recently updated repos", rows(stats.get("recent_repos") or [], "repos"))}
+  <text x="850" y="322" font-size="11" text-anchor="end" fill="#8f86a8">Updated {now:%d %b %Y, %H:%M} UTC · refreshes hourly</text>
+  </g>
+</svg>
+"""
+
+
 def main() -> None:
     stats = gather()
     out = Path("dist")
     out.mkdir(exist_ok=True)
     (out / "numbers.svg").write_text(numbers_svg(stats), encoding="utf-8")
     (out / "trophies.svg").write_text(trophies_svg(stats), encoding="utf-8")
+    now = datetime.now(timezone.utc)
+    (out / "github-stats.svg").write_text(stats_svg(stats, now), encoding="utf-8")
+    (out / "activity.svg").write_text(activity_svg(stats, now), encoding="utf-8")
     (out / "numbers.json").write_text(json.dumps(stats), encoding="utf-8")
     print(f"cards written: {stats}")
 

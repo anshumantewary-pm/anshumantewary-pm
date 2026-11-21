@@ -31,6 +31,12 @@
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=anshumantewary-pm&bg_color=141321&color=FE428E&line=FE428E&point=F8D847&area=true&area_color=A9FEF7&hide_border=true&radius=14" alt="Daily contribution graph" />
 </p>
 
+<h2>⚡ Latest activity</h2>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/activity.svg" width="860" alt="My latest commits and most recently updated repositories, refreshed hourly" />
+</p>
+
 <!-- ===================== ABOUT ===================== -->
 <h2><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Waving%20Hand.png" width="34" height="34" alt="" /> About me</h2>
 
@@ -73,12 +79,11 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 <h2>🔥 GitHub in numbers</h2>
 
 <p align="center">
-  <img height="175" src="https://github-readme-stats.vercel.app/api?username=anshumantewary-pm&show_icons=true&theme=radical&hide_border=true&border_radius=14" alt="GitHub stats" />
+  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/github-stats.svg" width="860" alt="GitHub stats: commits, contributions, repositories, stars and top languages" />
 </p>
 
 <p align="center">
   <img height="175" src="https://streak-stats.demolab.com?user=anshumantewary-pm&theme=radical&hide_border=true&border_radius=14" alt="Streak" />
-  <img height="175" src="https://github-readme-stats.vercel.app/api/top-langs/?username=anshumantewary-pm&layout=compact&theme=radical&hide_border=true&border_radius=14&langs_count=6" alt="Top languages" />
 </p>
 
 <p align="center">
