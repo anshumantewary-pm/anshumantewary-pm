@@ -1,6 +1,7 @@
 """Write the profile's live cards into dist/:
 
-* numbers.svg   "By the numbers": GitHub commits, LinkedIn connections, years consulting
+* numbers.svg   "By the numbers": GitHub contributions (highlighted), LinkedIn connections,
+                years consulting
 * trophies.svg  Trophy shelf ranked from real GitHub data (the public trophy
                 service is often down, so the profile generates its own)
 * numbers.json  The raw values, reused as a fallback if the API fails next time
@@ -35,16 +36,55 @@ def fetch_json(url: str, token: str = "") -> object:
         return json.load(response)
 
 
+def graphql(query: str, variables: dict, token: str) -> dict:
+    """Run a GitHub GraphQL query (needs a token; GITHUB_TOKEN works in Actions)."""
+    request = urllib.request.Request(
+        "https://api.github.com/graphql",
+        data=json.dumps({"query": query, "variables": variables}).encode(),
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(request, timeout=20) as response:
+        body = json.load(response)
+    if body.get("errors"):
+        raise RuntimeError(body["errors"])
+    return body["data"]
+
+
+def contributions(created: datetime) -> tuple[int, int]:
+    """(last-year total, all-time total), the same numbers as the profile's contribution graph.
+
+    contributionsCollection covers at most one year per query, so the all-time total asks for
+    each calendar year since the account was created, in one request via aliases.
+    """
+    now = datetime.now(timezone.utc)
+    years = range(created.year, now.year + 1)
+    per_year = "\n".join(
+        f'y{y}: contributionsCollection(from: "{y}-01-01T00:00:00Z", to: "{y}-12-31T23:59:59Z")'
+        " { contributionCalendar { totalContributions } }"
+        for y in years
+    )
+    query = (
+        "query($login: String!) { user(login: $login) {"
+        " lastYear: contributionsCollection { contributionCalendar { totalContributions } }\n"
+        f"{per_year} }} }}"
+    )
+    user = graphql(query, {"login": USER}, TOKEN)["user"]
+    last_year = int(user["lastYear"]["contributionCalendar"]["totalContributions"])
+    all_time = sum(int(user[f"y{y}"]["contributionCalendar"]["totalContributions"]) for y in years)
+    return last_year, all_time
+
+
 def gather() -> dict[str, int]:
     """Live stats from the GitHub API; fall back to the last published values."""
     try:
         api = "https://api.github.com"
-        commits = fetch_json(f"{api}/search/commits?q=author:{USER}", TOKEN)["total_count"]  # type: ignore[index]
         user = fetch_json(f"{api}/users/{USER}", TOKEN)
         repos = fetch_json(f"{api}/users/{USER}/repos?per_page=100&type=owner", TOKEN)
         created = datetime.fromisoformat(user["created_at"].replace("Z", "+00:00"))  # type: ignore[index]
+        last_year, all_time = contributions(created)
         return {
-            "commits": int(commits),
+            "contributions": last_year,
+            "contributions_all_time": all_time,
             "repos": int(user["public_repos"]),  # type: ignore[index]
             "languages": len({r["language"] for r in repos if r.get("language")}),  # type: ignore[union-attr]
             "stars": sum(int(r["stargazers_count"]) for r in repos),  # type: ignore[union-attr]
@@ -52,10 +92,12 @@ def gather() -> dict[str, int]:
         }
     except Exception as error:
         print(f"GitHub API failed ({error}); reusing the previous values")
+        empty = {"contributions": 0, "contributions_all_time": 0, "repos": 0, "languages": 0,
+                 "stars": 0, "github_years": 0}
         try:
-            return dict(fetch_json(PREVIOUS))  # type: ignore[arg-type]
+            return {**empty, **dict(fetch_json(PREVIOUS))}  # type: ignore[arg-type]
         except Exception:
-            return {"commits": 0, "repos": 0, "languages": 0, "stars": 0, "github_years": 0}
+            return empty
 
 
 def fade(delay: float) -> str:
@@ -67,10 +109,17 @@ def fade(delay: float) -> str:
 
 
 def numbers_svg(stats: dict[str, int]) -> str:
-    def tile(x: int, delay: float, emoji: str, value: str, label: str, sub: str) -> str:
+    def tile(x: int, delay: float, emoji: str, value: str, label: str, sub: str,
+             highlight: bool = False) -> str:
+        # The highlighted tile has a thicker gold border, inset so it is not clipped.
+        rect = (
+            'x="2" y="2" width="256" height="146" stroke="url(#gold)" stroke-width="4"'
+            if highlight
+            else 'x="0" y="0" width="260" height="150" stroke="url(#edge)" stroke-width="2"'
+        )
         return f"""
   <g transform="translate({x} 0)">{fade(delay)}
-    <rect x="0" y="0" width="260" height="150" rx="18" fill="#1f1235" stroke="url(#edge)" stroke-width="2" />
+    <rect {rect} rx="18" fill="#1f1235" />
     <text x="130" y="44" font-size="30" text-anchor="middle">{emoji}</text>
     <text x="130" y="92" font-size="40" font-weight="800" text-anchor="middle" fill="url(#gold)">{value}</text>
     <text x="130" y="118" font-size="15" font-weight="700" text-anchor="middle" fill="#fff4e0">{label}</text>
@@ -79,13 +128,15 @@ def numbers_svg(stats: dict[str, int]) -> str:
 
     tiles = "".join(
         [
-            tile(20, 0.2, "💻", f"{stats['commits']:,}", "GitHub commits", "public, all repos · updated daily"),
+            tile(20, 0.2, "🔥", f"{stats['contributions']:,}", "Contributions, last year",
+                 f"{stats['contributions_all_time']:,} all time · updated every 6 h", highlight=True),
             tile(300, 0.5, "🤝", LINKEDIN_CONNECTIONS, "LinkedIn connections", "and growing"),
             tile(580, 0.8, "🧠", f"{CONSULTING_YEARS}+ yrs", "Strategic consulting", "growth · product · operations"),
         ]
     )
     label = (
-        f"By the numbers: {stats['commits']} GitHub commits, {LINKEDIN_CONNECTIONS} LinkedIn "
+        f"By the numbers: {stats['contributions']} GitHub contributions in the last year, "
+        f"{LINKEDIN_CONNECTIONS} LinkedIn "
         f"connections, {CONSULTING_YEARS}+ years in strategic consulting"
     )
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="860" height="170" viewBox="0 0 860 170" role="img" aria-label="{label}">
@@ -101,7 +152,7 @@ def numbers_svg(stats: dict[str, int]) -> str:
 
 # (title, unit, value key, thresholds for S / A / B / C)
 TROPHIES = [
-    ("Commits", "commits", "commits", (1000, 500, 100, 10)),
+    ("Contributions", "last year", "contributions", (1000, 500, 100, 10)),
     ("Repositories", "repos", "repos", (50, 30, 10, 1)),
     ("Languages", "languages", "languages", (8, 5, 3, 1)),
     ("GitHub years", "years", "github_years", (5, 3, 2, 1)),

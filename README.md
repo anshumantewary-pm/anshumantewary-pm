@@ -18,6 +18,19 @@
   <img src="https://img.shields.io/github/followers/anshumantewary-pm?label=Followers&style=for-the-badge&color=7928CA&logo=github" alt="Followers" />
 </p>
 
+<!-- ===================== CONTRIBUTIONS (up front) ===================== -->
+<h2>🔥 Contributions</h2>
+
+<p align="center">
+  <a href="https://github.com/anshumantewary-pm">
+    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/numbers.svg" width="860" alt="By the numbers: GitHub contributions in the last year, LinkedIn connections and years in strategic consulting" />
+  </a>
+</p>
+
+<p align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=anshumantewary-pm&bg_color=141321&color=FE428E&line=FE428E&point=F8D847&area=true&area_color=A9FEF7&hide_border=true&radius=14" alt="Daily contribution graph" />
+</p>
+
 <!-- ===================== ABOUT ===================== -->
 <h2><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Waving%20Hand.png" width="34" height="34" alt="" /> About me</h2>
 
@@ -41,15 +54,6 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 
 <p align="center"><i>“Find the growth, build the product, run the machine, prove it with data.”</i></p>
 
-<!-- ===================== NUMBERS ===================== -->
-<h2>☀️ By the numbers</h2>
-
-<p align="center">
-  <a href="https://www.linkedin.com/in/tewary-anshuman/">
-    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/numbers.svg" width="860" alt="By the numbers: GitHub commits, LinkedIn connections and years in strategic consulting" />
-  </a>
-</p>
-
 <!-- ===================== TECH ===================== -->
 <h2>🛠️ Toolkit</h2>
 
@@ -69,7 +73,7 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 <h2>🔥 GitHub in numbers</h2>
 
 <p align="center">
-  <img height="175" src="https://github-readme-stats.vercel.app/api?username=anshumantewary-pm&show_icons=true&theme=radical&hide_border=true&border_radius=14" alt="GitHub stats" />
+  <img height="175" src="https://github-readme-stats.vercel.app/api?username=anshumantewary-pm&show_icons=true&hide=commits&theme=radical&hide_border=true&border_radius=14" alt="GitHub stats" />
 </p>
 
 <p align="center">
@@ -79,10 +83,6 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/trophies.svg" width="860" alt="Trophies ranked from my GitHub data" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=anshumantewary-pm&bg_color=141321&color=FE428E&line=FE428E&point=F8D847&area=true&area_color=A9FEF7&hide_border=true&radius=14" alt="Contribution graph" />
 </p>
 
 <!-- ===================== GAMES ===================== -->
