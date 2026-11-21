@@ -31,12 +31,6 @@
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=anshumantewary-pm&bg_color=141321&color=FE428E&line=FE428E&point=F8D847&area=true&area_color=A9FEF7&hide_border=true&radius=14" alt="Daily contribution graph" />
 </p>
 
-<h2>⚡ Latest activity</h2>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/activity.svg" width="860" alt="My latest commits and most recently updated repositories, refreshed hourly" />
-</p>
-
 <!-- ===================== ABOUT ===================== -->
 <h2><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Waving%20Hand.png" width="34" height="34" alt="" /> About me</h2>
 

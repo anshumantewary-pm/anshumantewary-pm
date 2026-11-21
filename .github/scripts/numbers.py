@@ -6,7 +6,6 @@
                 service is often down, so the profile generates its own)
 * github-stats.svg  Commits, contributions, repos, stars and a top-languages bar (replaces the
                    public github-readme-stats cards, which are often rate-limited or stale)
-* activity.svg  Latest commits and most recently updated repositories, refreshed every run
 * numbers.json  The raw values, reused as a fallback if the API fails next time
 
 Every element is visible without animation; the fade-ins are extras. Viewers that
@@ -96,31 +95,6 @@ def top_languages(repos: list[dict[str, Any]]) -> list[list[Any]]:
     return [[name, size / grand] for name, size in ranked]
 
 
-def recent_commits() -> list[dict[str, str]]:
-    """The latest commits authored by USER across all public repos (newest first)."""
-    url = (
-        "https://api.github.com/search/commits"
-        f"?q=author:{USER}&sort=author-date&order=desc&per_page=6"
-    )
-    items = fetch_json(url, TOKEN)["items"]  # type: ignore[index]
-    return [
-        {
-            "repo": item["repository"]["name"],
-            "message": item["commit"]["message"].splitlines()[0],
-            "date": item["commit"]["author"]["date"],
-        }
-        for item in items
-    ]
-
-
-def recent_repos(repos: list[dict[str, Any]]) -> list[dict[str, str]]:
-    ranked = sorted(repos, key=lambda r: r.get("pushed_at") or "", reverse=True)[:6]
-    return [
-        {"name": r["name"], "language": r.get("language") or "", "date": r.get("pushed_at") or ""}
-        for r in ranked
-    ]
-
-
 def gather() -> dict[str, Any]:
     """Live stats from the GitHub API; fall back to the last published values."""
     try:
@@ -145,7 +119,7 @@ def gather() -> dict[str, Any]:
         print(f"GitHub API failed ({error}); reusing the previous values")
         empty: dict[str, Any] = {"commits": 0, "contributions": 0, "contributions_all_time": 0,
                                  "repos": 0, "languages": 0, "stars": 0, "github_years": 0,
-                                 "top_languages": [], "recent_commits": [], "recent_repos": []}
+                                 "top_languages": []}
         try:
             return {**empty, **dict(fetch_json(PREVIOUS))}  # type: ignore[arg-type]
         except Exception:
@@ -153,8 +127,6 @@ def gather() -> dict[str, Any]:
     # The extras each fail on their own, so one bad call never blanks the whole card.
     for key, call in (
         ("top_languages", lambda: top_languages(repos)),  # type: ignore[arg-type]
-        ("recent_commits", recent_commits),
-        ("recent_repos", lambda: recent_repos(repos)),  # type: ignore[arg-type]
     ):
         try:
             stats[key] = call()
@@ -265,23 +237,6 @@ def trophies_svg(stats: dict[str, Any]) -> str:
 LANG_COLOURS = ["#ffd23f", "#ff7b29", "#ff0080", "#b392f0", "#00dfd8", "#7928ca"]
 
 
-def ago(stamp: str, now: datetime) -> str:
-    if not stamp:
-        return ""
-    then = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
-    minutes = max(int((now - then).total_seconds() // 60), 0)
-    if minutes < 60:
-        return f"{minutes}m ago"
-    if minutes < 48 * 60:
-        return f"{minutes // 60}h ago"
-    days = minutes // (60 * 24)
-    return f"{days}d ago" if days < 60 else then.strftime("%b %Y")
-
-
-def clip(text: str, limit: int) -> str:
-    return escape(text if len(text) <= limit else text[: limit - 1] + "…")
-
-
 def stats_svg(stats: dict[str, Any], now: datetime) -> str:
     tiles = [
         ("Commits", stats["commits"], "all time"),
@@ -333,46 +288,6 @@ def stats_svg(stats: dict[str, Any], now: datetime) -> str:
 """
 
 
-def activity_svg(stats: dict[str, Any], now: datetime) -> str:
-    def rows(items: list[dict[str, str]], kind: str) -> str:
-        if not items:
-            return '<text x="16" y="66" font-size="13" fill="#8f86a8">Nothing to show yet</text>'
-        out = []
-        for i, item in enumerate(items):
-            y = 62 + i * 36
-            if kind == "commits":
-                top, bottom = clip(item["message"], 44), clip(item["repo"], 34)
-            else:
-                top, bottom = clip(item["name"], 40), escape(item.get("language") or "—")
-            out.append(
-                f'<g>{fade(0.1 * i + 0.2)}'
-                f'<circle cx="22" cy="{y - 4}" r="4" fill="url(#gold)" />'
-                f'<text x="36" y="{y}" font-size="13" font-weight="600" fill="#fff4e0">{top}</text>'
-                f'<text x="36" y="{y + 15}" font-size="11" fill="#d9c6ff">{bottom}</text>'
-                f'<text x="394" y="{y}" font-size="11" text-anchor="end" fill="#ffaf7b">{ago(item["date"], now)}</text></g>'
-            )
-        return "".join(out)
-
-    def panel(x: int, title: str, body: str) -> str:
-        return f"""
-  <g transform="translate({x} 10)">
-    <rect width="410" height="290" rx="16" fill="#1f1235" stroke="url(#edge)" stroke-width="1.5" />
-    <text x="16" y="32" font-size="15" font-weight="800" fill="url(#gold)">{title}</text>
-    {body}
-  </g>"""
-
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="860" height="330" viewBox="0 0 860 330" role="img" aria-label="Latest commits and recently updated repositories">
-  <defs>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd23f" /><stop offset="1" stop-color="#ff7b29" /></linearGradient>
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffaf7b" /><stop offset="0.5" stop-color="#d76d77" /><stop offset="1" stop-color="#7928ca" /></linearGradient>
-  </defs>
-  <g font-family="{FONT}">{panel(10, "⚡ Latest commits", rows(stats.get("recent_commits") or [], "commits"))}{panel(440, "📦 Recently updated repos", rows(stats.get("recent_repos") or [], "repos"))}
-  <text x="850" y="322" font-size="11" text-anchor="end" fill="#8f86a8">Updated {now:%d %b %Y, %H:%M} UTC · refreshes hourly</text>
-  </g>
-</svg>
-"""
-
-
 def main() -> None:
     stats = gather()
     out = Path("dist")
@@ -381,7 +296,6 @@ def main() -> None:
     (out / "trophies.svg").write_text(trophies_svg(stats), encoding="utf-8")
     now = datetime.now(timezone.utc)
     (out / "github-stats.svg").write_text(stats_svg(stats, now), encoding="utf-8")
-    (out / "activity.svg").write_text(activity_svg(stats, now), encoding="utf-8")
     (out / "numbers.json").write_text(json.dumps(stats), encoding="utf-8")
     print(f"cards written: {stats}")
 
