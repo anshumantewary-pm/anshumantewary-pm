@@ -1,11 +1,14 @@
-name: Refresh profile cards (Pac-Man, stats, latest commits)
+name: Refresh profile cards (live contributions, streak, stats, Pac-Man)
 
 on:
   schedule:
-    # Hourly at an off-peak minute. GitHub drops many scheduled runs under load, so a
-    # 6-hourly schedule often meant one refresh a day; hourly keeps the cards fresh.
-    - cron: "23 * * * *"
+    # Every 15 minutes at off-peak minutes (GitHub may still delay scheduled runs under load).
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
+  # Sent by the "Refresh profile" workflow in other repositories on every push, so the cards
+  # update within a couple of minutes of new commits.
+  repository_dispatch:
+    types: [refresh]
   push:
     branches: [main]
 
@@ -23,6 +26,10 @@ jobs:
     steps:
       # Checkout first: it cleans the workspace, which would delete anything in dist/.
       - uses: actions/checkout@v4
+
+      - name: Wait for GitHub to count the new commit
+        if: github.event_name == 'repository_dispatch'
+        run: sleep 75
 
       - name: Pac-Man
         uses: abozanona/pacman-contribution-graph@main
@@ -44,3 +51,16 @@ jobs:
           build_dir: dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # GitHub caches README images. The links carry a fingerprint of the numbers, so as soon as
+      # anything changes the README points at fresh images and visitors see the live values.
+      - name: Point the README at the fresh cards
+        run: |
+          version=$(cat dist/version.txt)
+          sed -i -E "s#(anshumantewary-pm/anshumantewary-pm/output/[A-Za-z0-9_.-]+\.svg)(\?v=[A-Za-z0-9]+)?#\1?v=${version}#g" README.md
+          if git diff --quiet README.md; then echo "numbers unchanged"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Refresh profile card links" README.md
+          git pull --rebase origin main
+          git push origin HEAD:main

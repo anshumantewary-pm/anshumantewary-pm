@@ -54,7 +54,7 @@ def graphql(query: str, variables: dict, token: str) -> dict:
     return body["data"]
 
 
-def contributions(created: datetime) -> tuple[int, int]:
+def contributions(created: datetime) -> tuple[int, int, list[list[Any]]]:
     """(last-year total, all-time total), the same numbers as the profile's contribution graph.
 
     contributionsCollection covers at most one year per query, so the all-time total asks for
@@ -69,13 +69,38 @@ def contributions(created: datetime) -> tuple[int, int]:
     )
     query = (
         "query($login: String!) { user(login: $login) {"
-        " lastYear: contributionsCollection { contributionCalendar { totalContributions } }\n"
+        " lastYear: contributionsCollection { contributionCalendar { totalContributions"
+        " weeks { contributionDays { date contributionCount } } } }\n"
         f"{per_year} }} }}"
     )
     user = graphql(query, {"login": USER}, TOKEN)["user"]
     last_year = int(user["lastYear"]["contributionCalendar"]["totalContributions"])
     all_time = sum(int(user[f"y{y}"]["contributionCalendar"]["totalContributions"]) for y in years)
-    return last_year, all_time
+    days = [
+        [d["date"], int(d["contributionCount"])]
+        for w in user["lastYear"]["contributionCalendar"]["weeks"]
+        for d in w["contributionDays"]
+    ]
+    return last_year, all_time, days
+
+
+def streaks(days: list[list[Any]]) -> dict[str, Any]:
+    """Current streak (ending today, or yesterday if today has nothing yet), longest streak, active days."""
+    counts = [c for _, c in days]
+    longest = run = 0
+    for c in counts:
+        run = run + 1 if c > 0 else 0
+        longest = max(longest, run)
+    current, i = 0, len(counts) - 1
+    if i >= 0 and counts[i] == 0:
+        i -= 1  # today is not over yet
+    while i >= 0 and counts[i] > 0:
+        current += 1
+        i -= 1
+    best = max(days, key=lambda d: d[1]) if days else ["", 0]
+    return {"current_streak": current, "longest_streak": longest,
+            "active_days": sum(1 for c in counts if c > 0), "best_day": best,
+            "today": counts[-1] if counts else 0}
 
 
 def top_languages(repos: list[dict[str, Any]]) -> list[list[Any]]:
@@ -104,7 +129,7 @@ def gather() -> dict[str, Any]:
             f"{api}/users/{USER}/repos?per_page=100&type=owner&sort=pushed", TOKEN
         )
         created = datetime.fromisoformat(user["created_at"].replace("Z", "+00:00"))  # type: ignore[index]
-        last_year, all_time = contributions(created)
+        last_year, all_time, days = contributions(created)
         commits = fetch_json(f"{api}/search/commits?q=author:{USER}", TOKEN)["total_count"]  # type: ignore[index]
         stats: dict[str, Any] = {
             "commits": int(commits),
@@ -114,12 +139,15 @@ def gather() -> dict[str, Any]:
             "languages": len({r["language"] for r in repos if r.get("language")}),  # type: ignore[union-attr]
             "stars": sum(int(r["stargazers_count"]) for r in repos),  # type: ignore[union-attr]
             "github_years": (datetime.now(timezone.utc) - created).days // 365,
+            "days": days,
+            **streaks(days),
         }
     except Exception as error:
         print(f"GitHub API failed ({error}); reusing the previous values")
         empty: dict[str, Any] = {"commits": 0, "contributions": 0, "contributions_all_time": 0,
                                  "repos": 0, "languages": 0, "stars": 0, "github_years": 0,
-                                 "top_languages": []}
+                                 "top_languages": [], "days": [], "current_streak": 0,
+                                 "longest_streak": 0, "active_days": 0, "best_day": ["", 0], "today": 0}
         try:
             return {**empty, **dict(fetch_json(PREVIOUS))}  # type: ignore[arg-type]
         except Exception:
@@ -288,6 +316,82 @@ def stats_svg(stats: dict[str, Any], now: datetime) -> str:
 """
 
 
+def streak_svg(stats: dict[str, Any]) -> str:
+    best_date, best_count = stats.get("best_day") or ["", 0]
+    cells = [
+        (20, "🔥", f"{stats.get('current_streak', 0)}", "Current streak", "days in a row"),
+        (300, "🏆", f"{stats.get('longest_streak', 0)}", "Longest streak", "in the last year"),
+        (580, "📅", f"{stats.get('active_days', 0)}", "Active days", f"best day: {best_count} on {best_date}"),
+    ]
+    tiles = "".join(
+        f"""
+  <g transform="translate({x} 0)">{fade(0.2 + i * 0.3)}
+    <rect x="0" y="0" width="260" height="150" rx="18" fill="#1f1235" stroke="url(#edge)" stroke-width="2" />
+    <text x="130" y="44" font-size="30" text-anchor="middle">{emoji}</text>
+    <text x="130" y="92" font-size="40" font-weight="800" text-anchor="middle" fill="url(#gold)">{value}</text>
+    <text x="130" y="118" font-size="15" font-weight="700" text-anchor="middle" fill="#fff4e0">{label}</text>
+    <text x="130" y="137" font-size="12" text-anchor="middle" fill="#d9c6ff">{sub}</text>
+  </g>"""
+        for i, (x, emoji, value, label, sub) in enumerate(cells)
+    )
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="860" height="170" viewBox="0 0 860 170" role="img" aria-label="Current streak {stats.get('current_streak', 0)} days, longest {stats.get('longest_streak', 0)} days">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd23f" /><stop offset="1" stop-color="#ff7b29" /></linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffaf7b" /><stop offset="0.5" stop-color="#d76d77" /><stop offset="1" stop-color="#7928ca" /></linearGradient>
+  </defs>
+  <g font-family="{FONT}">{tiles}
+  </g>
+</svg>
+"""
+
+
+def daily_svg(stats: dict[str, Any], now: datetime) -> str:
+    """Contributions per day over the last 60 days, drawn from the live contribution calendar."""
+    days = (stats.get("days") or [])[-60:]
+    w, h, left, right, top, bottom = 860, 240, 46, 20, 40, 34
+    if not days:
+        return f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}"><text x="20" y="40" fill="#d9c6ff" font-family="{FONT}">No data yet</text></svg>'
+    peak = max(c for _, c in days) or 1
+    step = (w - left - right) / max(len(days) - 1, 1)
+
+    def xy(i: int, c: int) -> tuple[float, float]:
+        return left + i * step, top + (h - top - bottom) * (1 - c / peak)
+
+    pts = [xy(i, c) for i, (_, c) in enumerate(days)]
+    line = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+    area = f"{left},{h - bottom} " + line + f" {pts[-1][0]:.1f},{h - bottom}"
+    grid = "".join(
+        f'<line x1="{left}" x2="{w - right}" y1="{top + (h - top - bottom) * k / 4:.1f}" y2="{top + (h - top - bottom) * k / 4:.1f}" stroke="#ffffff" stroke-opacity="0.06" />'
+        f'<text x="{left - 8}" y="{top + (h - top - bottom) * k / 4 + 4:.1f}" font-size="11" text-anchor="end" fill="#8f86a8">{round(peak * (1 - k / 4))}</text>'
+        for k in range(5)
+    )
+    labels = "".join(
+        f'<text x="{xy(i, 0)[0]:.1f}" y="{h - 12}" font-size="11" text-anchor="middle" fill="#8f86a8">{d[5:]}</text>'
+        for i, (d, _) in enumerate(days) if i % 10 == 0 or i == len(days) - 1
+    )
+    dots = "".join(
+        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.6" fill="#ffd23f"><title>{days[i][0]}: {days[i][1]}</title></circle>'
+        for i, (x, y) in enumerate(pts) if days[i][1] > 0
+    )
+    total = sum(c for _, c in days)
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{total} contributions in the last 60 days">
+  <defs>
+    <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7b29" stop-opacity="0.45" /><stop offset="1" stop-color="#ff0080" stop-opacity="0" /></linearGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff0080" /><stop offset="1" stop-color="#ffd23f" /></linearGradient>
+  </defs>
+  <rect width="{w}" height="{h}" rx="16" fill="#1f1235" />
+  <g font-family="{FONT}">
+    <text x="{left}" y="26" font-size="14" font-weight="700" fill="#fff4e0">Daily contributions · last 60 days</text>
+    <text x="{w - right}" y="26" font-size="12" text-anchor="end" fill="#d9c6ff">{total} in 60 days · {stats.get('today', 0)} today · as of {now:%d %b %H:%M} UTC</text>
+    {grid}
+    <polygon points="{area}" fill="url(#fill)" />
+    <polyline points="{line}" fill="none" stroke="url(#stroke)" stroke-width="2.4" stroke-linejoin="round" />
+    {dots}{labels}
+  </g>
+</svg>
+"""
+
+
 def main() -> None:
     stats = gather()
     out = Path("dist")
@@ -296,8 +400,17 @@ def main() -> None:
     (out / "trophies.svg").write_text(trophies_svg(stats), encoding="utf-8")
     now = datetime.now(timezone.utc)
     (out / "github-stats.svg").write_text(stats_svg(stats, now), encoding="utf-8")
+    (out / "streak.svg").write_text(streak_svg(stats), encoding="utf-8")
+    (out / "daily.svg").write_text(daily_svg(stats, now), encoding="utf-8")
+    # A short fingerprint of the numbers: the README's image links carry it, so GitHub's image
+    # cache fetches fresh cards as soon as anything changes.
+    import hashlib
+
+    key = {k: v for k, v in stats.items() if k != "top_languages"}
+    (out / "version.txt").write_text(hashlib.sha1(json.dumps(key, sort_keys=True).encode()).hexdigest()[:10],
+                                     encoding="utf-8")
     (out / "numbers.json").write_text(json.dumps(stats), encoding="utf-8")
-    print(f"cards written: {stats}")
+    print("cards written:", {k: v for k, v in stats.items() if k != "days"})
 
 
 if __name__ == "__main__":
