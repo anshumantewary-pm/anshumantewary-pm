@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="170" viewBox="0 0 860 170" role="img" aria-label="Current streak 5 days, longest 11 days">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd23f" /><stop offset="1" stop-color="#ff7b29" /></linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffaf7b" /><stop offset="0.5" stop-color="#d76d77" /><stop offset="1" stop-color="#7928ca" /></linearGradient>
+  </defs>
+  <g font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <g transform="translate(20 0)"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.200;1" dur="1.00s" />
+    <rect x="0" y="0" width="260" height="150" rx="18" fill="#1f1235" stroke="url(#edge)" stroke-width="2" />
+    <text x="130" y="44" font-size="30" text-anchor="middle">🔥</text>
+    <text x="130" y="92" font-size="40" font-weight="800" text-anchor="middle" fill="url(#gold)">5</text>
+    <text x="130" y="118" font-size="15" font-weight="700" text-anchor="middle" fill="#fff4e0">Current streak</text>
+    <text x="130" y="137" font-size="12" text-anchor="middle" fill="#d9c6ff">days in a row</text>
+  </g>
+  <g transform="translate(300 0)"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.385;1" dur="1.30s" />
+    <rect x="0" y="0" width="260" height="150" rx="18" fill="#1f1235" stroke="url(#edge)" stroke-width="2" />
+    <text x="130" y="44" font-size="30" text-anchor="middle">🏆</text>
+    <text x="130" y="92" font-size="40" font-weight="800" text-anchor="middle" fill="url(#gold)">11</text>
+    <text x="130" y="118" font-size="15" font-weight="700" text-anchor="middle" fill="#fff4e0">Longest streak</text>
+    <text x="130" y="137" font-size="12" text-anchor="middle" fill="#d9c6ff">in the last year</text>
+  </g>
+  <g transform="translate(580 0)"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.500;1" dur="1.60s" />
+    <rect x="0" y="0" width="260" height="150" rx="18" fill="#1f1235" stroke="url(#edge)" stroke-width="2" />
+    <text x="130" y="44" font-size="30" text-anchor="middle">📅</text>
+    <text x="130" y="92" font-size="40" font-weight="800" text-anchor="middle" fill="url(#gold)">51</text>
+    <text x="130" y="118" font-size="15" font-weight="700" text-anchor="middle" fill="#fff4e0">Active days</text>
+    <text x="130" y="137" font-size="12" text-anchor="middle" fill="#d9c6ff">best day: 168 on 2026-11-21</text>
+  </g>
+  </g>
+</svg>
