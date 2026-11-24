@@ -23,12 +23,12 @@
 
 <p align="center">
   <a href="https://github.com/anshumantewary-pm">
-    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/numbers.svg?v=7dd6646624" width="860" alt="By the numbers: total GitHub contributions, LinkedIn connections and years in strategic consulting" />
+    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/numbers.svg?v=493be5e199" width="860" alt="By the numbers: total GitHub contributions, LinkedIn connections and years in strategic consulting" />
   </a>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/daily.svg?v=7dd6646624" width="860" alt="Daily contributions over the last 60 days, refreshed live" />
+  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/daily.svg?v=493be5e199" width="860" alt="Daily contributions over the last 60 days, refreshed live" />
 </p>
 
 <!-- ===================== ABOUT ===================== -->
@@ -73,15 +73,15 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 <h2>🔥 GitHub in numbers</h2>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/github-stats.svg?v=7dd6646624" width="860" alt="GitHub stats: commits, contributions, repositories, stars and top languages" />
+  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/github-stats.svg?v=493be5e199" width="860" alt="GitHub stats: commits, contributions, repositories, stars and top languages" />
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/streak.svg?v=7dd6646624" width="860" alt="Current streak, longest streak and active days" />
+  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/streak.svg?v=493be5e199" width="860" alt="Current streak, longest streak and active days" />
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/trophies.svg?v=7dd6646624" width="860" alt="Trophies ranked from my GitHub data" />
+  <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/trophies.svg?v=493be5e199" width="860" alt="Trophies ranked from my GitHub data" />
 </p>
 
 <!-- ===================== GAMES ===================== -->
@@ -89,8 +89,8 @@ I sit where strategy meets execution: I find where the growth is, shape the prod
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/pacman-contribution-graph-dark.svg?v=7dd6646624" />
-    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/pacman-contribution-graph.svg?v=7dd6646624" alt="Pac-Man eating my contribution graph" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/pacman-contribution-graph-dark.svg?v=493be5e199" />
+    <img src="https://raw.githubusercontent.com/anshumantewary-pm/anshumantewary-pm/output/pacman-contribution-graph.svg?v=493be5e199" alt="Pac-Man eating my contribution graph" />
   </picture>
 </p>
 
