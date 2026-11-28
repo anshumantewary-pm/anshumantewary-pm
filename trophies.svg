@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="180" viewBox="0 0 850 180" role="img" aria-label="GitHub trophies">
+  <g font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <g transform="translate(10 0)"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.111;1" dur="0.90s" />
+    <rect x="0" y="0" width="156" height="170" rx="16" fill="#1f1235" stroke="#ffaf7b" stroke-opacity="0.7" stroke-width="2" />
+    <g transform="translate(78 62)" fill="#ffaf7b">
+      <path d="M-26 -34 h52 v14 a26 26 0 0 1 -52 0 z" />
+      <path d="M-26 -28 h-12 a12 12 0 0 0 12 18 z M26 -28 h12 a12 12 0 0 1 -12 18 z" opacity="0.75" />
+      <rect x="-5" y="-2" width="10" height="16" />
+      <rect x="-18" y="14" width="36" height="8" rx="2" />
+      <text x="0" y="-12" font-size="18" font-weight="900" text-anchor="middle" fill="#1f1235">A</text>
+    </g>
+    <text x="78" y="118" font-size="15" font-weight="800" text-anchor="middle" fill="#fff4e0">Commits</text>
+    <text x="78" y="140" font-size="13" text-anchor="middle" fill="#d9c6ff">675 commits</text>
+    <text x="78" y="158" font-size="11" text-anchor="middle" fill="#ffaf7b">Rank A</text>
+  </g>
+  <g transform="translate(178 0)"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.238;1" dur="1.05s" />
+    <rect x="0" y="0" width="156" height="170" rx="16" fill="#1f1235" stroke="#ffaf7b" stroke-opacity="0.7" stroke-width="2" />
+    <g transform="translate(78 62)" fill="#ffaf7b">
+      <path d="M-26 -34 h52 v14 a26 26 0 0 1 -52 0 z" />
+      <path d="M-26 -28 h-12 a12 12 0 0 0 12 18 z M26 -28 h12 a12 12 0 0 1 -12 18 z" opacity="0.75" />
+      <rect x="-5" y="-2" width="10" height="16" />
+      <rect x="-18" y="14" width="36" height="8" rx="2" />
+      <text x="0" y="-12" font-size="18" font-weight="900" text-anchor="middle" fill="#1f1235">A</text>
+    </g>
+    <text x="78" y="118" font-size="15" font-weight="800" text-anchor="middle" fill="#fff4e0">Repositories</text>
+    <text x="78" y="140" font-size="13" text-anchor="middle" fill="#d9c6ff">44 repos</text>
+    <text x="78" y="158" font-size="11" text-anchor="middle" fill="#ffaf7b">Rank A</text>
+  </g>
+  <g transform="translate(346 0)"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.333;1" dur="1.20s" />
+    <rect x="0" y="0" width="156" height="170" rx="16" fill="#1f1235" stroke="#ffaf7b" stroke-opacity="0.7" stroke-width="2" />
+    <g transform="translate(78 62)" fill="#ffaf7b">
+      <path d="M-26 -34 h52 v14 a26 26 0 0 1 -52 0 z" />
+      <path d="M-26 -28 h-12 a12 12 0 0 0 12 18 z M26 -28 h12 a12 12 0 0 1 -12 18 z" opacity="0.75" />
+      <rect x="-5" y="-2" width="10" height="16" />
+      <rect x="-18" y="14" width="36" height="8" rx="2" />
+      <text x="0" y="-12" font-size="18" font-weight="900" text-anchor="middle" fill="#1f1235">A</text>
+    </g>
+    <text x="78" y="118" font-size="15" font-weight="800" text-anchor="middle" fill="#fff4e0">Languages</text>
+    <text x="78" y="140" font-size="13" text-anchor="middle" fill="#d9c6ff">5 languages</text>
+    <text x="78" y="158" font-size="11" text-anchor="middle" fill="#ffaf7b">Rank A</text>
+  </g>
+  <g transform="translate(514 0)"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.407;1" dur="1.35s" />
+    <rect x="0" y="0" width="156" height="170" rx="16" fill="#1f1235" stroke="#ffaf7b" stroke-opacity="0.7" stroke-width="2" />
+    <g transform="translate(78 62)" fill="#ffaf7b">
+      <path d="M-26 -34 h52 v14 a26 26 0 0 1 -52 0 z" />
+      <path d="M-26 -28 h-12 a12 12 0 0 0 12 18 z M26 -28 h12 a12 12 0 0 1 -12 18 z" opacity="0.75" />
+      <rect x="-5" y="-2" width="10" height="16" />
+      <rect x="-18" y="14" width="36" height="8" rx="2" />
+      <text x="0" y="-12" font-size="18" font-weight="900" text-anchor="middle" fill="#1f1235">A</text>
+    </g>
+    <text x="78" y="118" font-size="15" font-weight="800" text-anchor="middle" fill="#fff4e0">GitHub years</text>
+    <text x="78" y="140" font-size="13" text-anchor="middle" fill="#d9c6ff">3 years</text>
+    <text x="78" y="158" font-size="11" text-anchor="middle" fill="#ffaf7b">Rank A</text>
+  </g>
+  <g transform="translate(682 0)"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.467;1" dur="1.50s" />
+    <rect x="0" y="0" width="156" height="170" rx="16" fill="#1f1235" stroke="#ffaf7b" stroke-opacity="0.7" stroke-width="2" />
+    <g transform="translate(78 62)" fill="#ffaf7b">
+      <path d="M-26 -34 h52 v14 a26 26 0 0 1 -52 0 z" />
+      <path d="M-26 -28 h-12 a12 12 0 0 0 12 18 z M26 -28 h12 a12 12 0 0 1 -12 18 z" opacity="0.75" />
+      <rect x="-5" y="-2" width="10" height="16" />
+      <rect x="-18" y="14" width="36" height="8" rx="2" />
+      <text x="0" y="-12" font-size="18" font-weight="900" text-anchor="middle" fill="#1f1235">A</text>
+    </g>
+    <text x="78" y="118" font-size="15" font-weight="800" text-anchor="middle" fill="#fff4e0">Consulting</text>
+    <text x="78" y="140" font-size="13" text-anchor="middle" fill="#d9c6ff">3 years</text>
+    <text x="78" y="158" font-size="11" text-anchor="middle" fill="#ffaf7b">Rank A</text>
+  </g>
+  </g>
+</svg>
